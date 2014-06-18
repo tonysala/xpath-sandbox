@@ -5,19 +5,19 @@
 function clean($xml){
 	$xml = htmlspecialchars($xml);
 	
+	// Syntax highlight text
+	$pattern = '/&gt;(.*?)&lt;/ism';
+	$replace = '&gt;<span style="color:black;">$1</span>&lt;';
+	$xml = preg_replace($pattern,$replace,$xml);
+	
 	// Syntax highlight tags and attributes
-	$pattern = '/(&lt;\s?\??\w*\s+)((\w++\s*=)\s*(&quot;.*?&quot;))+(\s?\??&gt;)/im';
+	$pattern = '/(&lt;\s*?\??\w*\s+)((\w+\s*=)\s*(&quot;.*?&quot;))+(\s?\??&gt;)/ism';
 	$replace = '<span style="color:blue;"><b>$1</b></span><span style="color:darkblue"><b>$3</b><span style="color:green">$4</span><span style="color:blue;"><b>$5</b></span>';
 	$xml = preg_replace($pattern,$replace,$xml);
 	
-	// Syntax highlight text
-	$pattern = '/&gt;(.*?)&lt;/im';
-	$replace = '&gt;<span style="color:black;">$1</span>&lt;';
-	$xml = preg_replace($pattern,$replace,$xml);
-	$xml = preg_replace('/&lt;\s?\w*\s+((\w+)\s*(=)\s*\'(\w+)\'+)+\s?&gt;/im',
-		'<span style="color:red">$2</span><span style="color:yellow">$3</span><span style="color:brown">$4</span>',
-		$xml);
-	$xml = preg_replace('/    /im','&nbsp;&nbsp;&nbsp;&nbsp;',$xml);
+	// Space characters to HTML non breaking space
+	$xml = preg_replace('/    /ism','&nbsp;&nbsp;&nbsp;&nbsp;',$xml);
+	
 	$xml = nl2br($xml);
 	
 	return $xml;
