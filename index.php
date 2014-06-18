@@ -3,46 +3,21 @@
 //error_reporting(E_ALL);
 
 function clean($xml){
-	$xml = htmlspecialchars($xml);
-	
-	// Syntax highlight text
-	$pattern = '/&gt;(.*?)&lt;/ism';
-	$replace = '&gt;<span style="color:black;">$1</span>&lt;';
-	$xml = preg_replace($pattern,$replace,$xml);
-	
-	// Syntax highlight tags and attributes
-	$pattern = '/(&lt;\s*?\??\w*\s+)((\w+\s*=)\s*(&quot;.*?&quot;))+(\s?\??&gt;)/ism';
-	$replace = '<span style="color:blue;"><b>$1</b></span><span style="color:darkblue"><b>$3</b><span style="color:green">$4</span><span style="color:blue;"><b>$5</b></span>';
-	$xml = preg_replace($pattern,$replace,$xml);
-	
-	// Space characters to HTML non breaking space
-	$xml = preg_replace('/    /ism','&nbsp;&nbsp;&nbsp;&nbsp;',$xml);
-	
-	$xml = nl2br($xml);
-	
-	return $xml;
+	return htmlspecialchars($xml); 
 }
 
 if (isset($_POST['query']) && isset($_POST['xml'])){
 	
-	$doc = new DOMDocument;
-
-	// We don't want to bother with white spaces
-	$doc->preserveWhiteSpace = false;
-
 	if (empty($_POST['xml'])){
-		$doc->Load('test.xml');
-		$xmlraw = clean(file_get_contents('test.xml'));
+		$xml = file_get_contents('test.xml');
+		$doc = new SimpleXMLElement($xml);
 	} else {
-		$doc->LoadXML($_POST['xml']);
-		$xmlraw = clean($_POST['xml']);
+		$doc = new SimpleXMLElement($_POST['xml']);
 	}
-
-	$xml = new DOMXPath($doc);
-	
-	if ($elements = @$xml->query($_POST['query'])){
+	$xmlraw = clean($doc->asXML());
+	if ($elements = @$doc->xpath($_POST['query'])){
 		print json_encode(array(
-			"status" => $elements->length, 
+			"status" => count($elements), 
 			"error" => false,
 			"xml" => $xmlraw
 		));
@@ -64,6 +39,9 @@ $xml = file_get_contents('test.xml');
 
 <html>
 	<head>
+		<script src='libs/prettify.js'></script>
+		<link href='libs/prettify.css' rel='stylesheet'/>
+		<link href='libs/desert.css' rel='stylesheet'/>
 		<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,400,600' rel='stylesheet' type='text/css'>
 		<link href='libs/bootstrap.min.css' rel='stylesheet'/>
 		<link href='libs/styles.css' rel='stylesheet'/>
@@ -78,11 +56,11 @@ $xml = file_get_contents('test.xml');
 					<button class='btn btn-default toolbar-btn' disabled id='xml_status' type='button'>...</button>
 					<button class='btn btn-default toolbar-btn' id='zoomout' type='button'>-</button>
 					<button class='btn btn-default toolbar-btn' id='zoomin'  type='button'>+</button>
-					<button class='btn btn-primary toolbar-btn' type='button'>Upload XML!</button>
+					<button class='btn btn-primary toolbar-btn' id='edit' type='button'>Edit XML!</button>
 				</span>
 			</div>
 			<span id='xml_status'></span>
-			<div id='xml_out' contenteditable class='full-width-editor form-control'><?=clean($xml)?></div>
+			<div id='xml_out' contenteditable class='full-width-editor form-control'><pre class='prettyprint'><?=clean($xml)?></pre></div>
 		</div>
 	</body>
 </html>

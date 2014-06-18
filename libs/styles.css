@@ -6,7 +6,7 @@
 }
 
 html, body {
-	font-family: 'Source Code Pro';
+	font-family: 'Source Code Pro'!important;
 	overflow:hidden;
 	height:100%;
 }
@@ -28,6 +28,13 @@ html, body {
 	border-radius:0;
 	width:100%;
 	min-height:95%;
+	padding:0;
+}
+.full-width-editor > pre {
+	border: 0;
+	border-radius: 0;
+	padding: 10px;
+    margin: 0;
 }
 .window {
 	overflow:hidden;

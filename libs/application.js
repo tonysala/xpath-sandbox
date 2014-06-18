@@ -1,4 +1,7 @@
 $(document).on("ready",function(){
+	
+	prettyPrint();
+	
 	$("#query_field").on("keyup",function(){
 		var query = $("#query_field").val();
 		var xml = $("#xml_out").text();
@@ -11,7 +14,7 @@ $(document).on("ready",function(){
 		}).done(function(data){
 			console.log(data);
 			//data = $.parseJSON(data);
-			$("#xml_out").html(data.xml);
+			// $("#xml_out").html(data.xml);
 			
 			if (data.error){
 				$("#xml_status").html("Error, invalid syntax");
@@ -21,6 +24,16 @@ $(document).on("ready",function(){
 		});
 	});
 	
+    $("#edit").on("click",function(){
+        if ($("#xml_out").prop("contenteditable") != true){
+            $("#xml_out").prop("contenteditable",true);
+            $(this).text("Save XML!");
+        } else {
+            $("#xml_out").prop("contenteditable",false);
+            $(this).text("Edit XML!");
+        }
+    });
+    
 	$("#zoomout").on("click",function(){
 		console.log("out");
 		var font_size = parseInt($("#xml_out").css("font-size"));
