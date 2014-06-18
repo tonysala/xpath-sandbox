@@ -32,8 +32,10 @@ if (isset($_POST['query']) && isset($_POST['xml'])){
 
 	if (empty($_POST['xml'])){
 		$doc->Load('test.xml');
+		$xmlraw = clean(file_get_contents('test.xml'));
 	} else {
 		$doc->LoadXML($_POST['xml']);
+		$xmlraw = clean($_POST['xml']);
 	}
 
 	$xml = new DOMXPath($doc);
@@ -42,13 +44,13 @@ if (isset($_POST['query']) && isset($_POST['xml'])){
 		print json_encode(array(
 			"status" => $elements->length, 
 			"error" => false,
-			"xml" => clean(file_get_contents('test.xml'))
+			"xml" => $xmlraw
 		));
 	} else {
 		print json_encode(array(
 			"status" => 0, 
 			"error" => true,
-			"xml" => clean(file_get_contents('test.xml'))
+			"xml" => $xmlraw
 	));
 	}
 	
