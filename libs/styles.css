@@ -1,0 +1,43 @@
+* {
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+}
+
+html, body {
+	font-family: 'Source Code Pro';
+	overflow:hidden;
+	height:100%;
+}
+#query_field {
+	font-weight:600;
+	font-size:20px;
+	padding:25px;
+	width:100%;
+	border:0;
+	border-radius:0;
+}
+.full-width-editor {
+	font-weight:200;
+	overflow:scroll;
+	resize: none;
+	border-left:0;
+	border-right:0;
+	border-bottom:0;
+	border-radius:0;
+	width:100%;
+	min-height:95%;
+}
+.window {
+	overflow:hidden;
+	width:100%;
+	min-height:100%;
+	height: auto !important;
+	height: 100%;
+}
+.toolbar-btn {
+	padding: 15px;
+	border: 0;
+	border-radius: 0;
+}
