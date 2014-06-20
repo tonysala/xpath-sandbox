@@ -20,7 +20,7 @@ html, body {
 }
 .full-width-editor {
 	font-weight:200;
-	overflow:scroll;
+	overflow-y:scroll;
 	resize: none;
 	border-left:0;
 	border-right:0;
@@ -35,6 +35,7 @@ html, body {
 	border-radius: 0;
 	padding: 10px;
     margin: 0;
+    height:100%;
 }
 .window {
 	overflow:hidden;
